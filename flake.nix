@@ -11,15 +11,19 @@
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... } @ inputs:
+  outputs = { nixpkgs, home-manager, nvf, ... } @ inputs:
   let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
   in
   {
-
     nixosConfigurations.ashforest-host = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       inherit system;
@@ -30,7 +34,10 @@
 
     homeConfigurations.ashforest = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = [ ./home.nix ];
+      modules = [ 
+        nvf.homeManagerModules.default
+        ./home.nix
+      ];
     };
 
   };

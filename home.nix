@@ -15,29 +15,92 @@
   # release notes.
   home.stateVersion = "25.05"; # Please read the comment before changing.
 
+  programs.nvf = {
+    enable = true;
+    # your settings need to go into the settings attribute set
+    # most settings are documented in the appendix
+    settings = {
+      vim = {
+        undoFile.enable = true;
+        options = {
+          shiftwidth = 2;
+          tabstop = 2;
+        };
+
+        diagnostics = {
+          enable = true;
+          config.sign = {
+              signs.text = {
+                "vim.diagnostic.severity.ERROR" = "󰅚 ";
+                "vim.diagnostic.severity.WARN" = "󰀪 ";
+              };
+            virtual_lines = true;
+            virtual_text = true;
+          };
+          nvim-lint.enable = true;
+        };
+
+        binds.whichKey.enable = true;
+
+        theme.enable = true;
+        theme.name = "catppuccin";
+        theme.style = "mocha";
+
+        statusline.lualine.enable = true;
+
+        telescope.enable = true;
+
+        viAlias = true;
+        vimAlias = true;
+
+        treesitter = {
+          enable = true;
+          autotagHtml = true;
+          context.enable = true;
+        };
+
+        languages = {
+          enableFormat = true;
+          nix.enable = true;
+          rust.enable = true;
+        };
+        lsp = {
+          enable = true;
+          formatOnSave = true;
+
+        };
+
+        autocomplete.blink-cmp = {
+          enable = true;
+          friendly-snippets.enable = true;
+          mappings = {
+            confirm = "<Tab>";
+            next = "<C-n>";
+            previous = "<C-N>";
+          };
+        };
+
+        autopairs.nvim-autopairs.enable = true;
+
+        maps = {
+          insert = {
+            "jk".action = "<ESC>";
+          };
+        };
+
+        utility = {
+          yazi-nvim.enable = true;
+        };
+      };
+    };
+  };
+
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
     pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
   home.file = {
     # # Building this configuration will create a copy of 'dotfiles/screenrc' in
     # # the Nix store. Activating the configuration will then make '~/.screenrc' a
@@ -51,22 +114,6 @@
     # '';
   };
 
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/ashforest/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
